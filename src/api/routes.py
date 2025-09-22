@@ -20,3 +20,20 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@api.route('/sign_up', methods=['POST'])
+def handle_sign_up():
+
+    body = request.json
+    new_email = body["email"]
+    new_password = body["password"]
+    new_user = User(email = new_email, password = new_password)
+
+    response_body = {
+        "message": "New user successfully created!",
+        "user": new_user.serialize()
+    }
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify(response_body), 200
